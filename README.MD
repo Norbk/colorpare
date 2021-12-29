@@ -3,7 +3,7 @@ A typescript/javascript library for color conversion and comparison.
 
 ## Usage
 ### Creating a color object.
-The following color space are supported for now `HEX`, `RGB`, `HSL`, `HSV`, `CMYK`, `XYZ`, `CIELab`.
+Supported spaces: `HEX`, `RGB`, `HSL`, `HSV`, `CMYK`, `XYZ`, `CIELab`.
 ```js
 // default constructor - empty (black) color object
 const color = new Color();
@@ -110,5 +110,4 @@ color1.distanceFrom(color2); // {cie76: 100, cie94: 100, cie2000: 100}
 - &#9744; constructor for default css values like: `yellow`, `black`, `red`, `...`
 - &#9744; constructor for css rgb string values like: `rgb(255, 0, 0)`
 - &#9744; return function for css rgb
-- &#9744; add alpha channel to rgb values
 
