@@ -53,7 +53,5 @@ export const xyzToCIELab = (xyz: XYZ, roundTo = 2, ref?: XYZ): CIELab => {
   lab.b = lab.b > 128 ? 128 : lab.b;
   lab.b = lab.b < -128 ? -128 : lab.b;
 
-  console.log(lab);
-
   return lab;
 };

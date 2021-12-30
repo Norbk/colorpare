@@ -1,6 +1,13 @@
 # COOLORS
 A typescript/javascript library for color translation, transformation and comparison.
 
+Supports ESM and CommonJS.
+
+## Install
+```
+npm i colorpare
+```
+
 ## Usage
 ### Creating a color object.
 Supported spaces: `HEX`, `RGB`, `HSL`, `HSV`, `CMYK`, `XYZ`, `CIELab`.
