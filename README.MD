@@ -1,4 +1,4 @@
-# COOLORS
+# Colorpare
 A typescript/javascript library for color translation, transformation and comparison.
 
 Supports ESM and CommonJS.
