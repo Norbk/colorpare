@@ -1,6 +1,6 @@
 {
   "name": "colorpare",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A typescript/javascript library for color translation, transformation and comparison.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
