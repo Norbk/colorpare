@@ -1,5 +1,5 @@
 # COOLORS
-A typescript/javascript library for color conversion and comparison.
+A typescript/javascript library for color translation, transformation and comparison.
 
 ## Usage
 ### Creating a color object.

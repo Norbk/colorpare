@@ -1,7 +1,7 @@
 {
   "name": "colorpare",
   "version": "1.0.0",
-  "description": "Color translation and comparison library.",
+  "description": "Color translation, transofrmation and comparison library.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
@@ -13,9 +13,11 @@
   },
   "keywords": [
     "color",
+    "colors",
     "colour",
     "compare",
-    "translate"
+    "translate",
+    "transform"
   ],
   "author": "NorbK <kozarin@gmail.com>",
   "repository": "Norbk/colorpare",
