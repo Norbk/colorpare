@@ -1,4 +1,4 @@
-import { xyzToCmyk, xyzToHex, xyzToHsl, xyzToHsv, xyzToRgb } from ".";
+import { hexToCss, xyzToCmyk, xyzToHex, xyzToHsl, xyzToHsv, xyzToRgb } from ".";
 import { CIELab, CMYK, HSL, HSV, RGB, XYZ } from "../colorTypes";
 import { round } from "../utils";
 
@@ -28,9 +28,11 @@ export const labToXyz = (lab: CIELab, roundTo = 2, ref?: XYZ): XYZ => {
     y: round(_y * xyzR.y, roundTo),
     z: round(_z * xyzR.z, roundTo)
   };
-}
+};
 
 export const labToHex = (lab: CIELab): string => xyzToHex(labToXyz(lab));
+
+export const labToCss = (lab: CIELab, rgbOnly?: boolean): string => hexToCss(labToHex(lab), rgbOnly);
 
 export const labToRgb = (lab: CIELab): RGB => xyzToRgb(labToXyz(lab));
 

@@ -1,6 +1,6 @@
 import { CMYK, HSL, HSV, RGB, XYZ } from "../colorTypes";
 import { round } from "../utils";
-import { xyzToCIELab } from ".";
+import { hexToCss, xyzToCIELab } from ".";
 
 const deltaRGB = (rgb: RGB): RGB => ({
   r: rgb.r / 255,
@@ -36,6 +36,8 @@ export const rgbToHex = (rgb: RGB): string => {
   }
   return hex;
 };
+
+export const rgbToCss = (rgb: RGB, rgbOnly?: boolean): string => hexToCss(rgbToHex(rgb), rgbOnly);
 
 export const rgbToHsl = (rgb: RGB, roundTo = 2): HSL => {
   const hsl: HSL = { h: 0, s: 0, l: 0 };

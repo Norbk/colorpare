@@ -1,4 +1,4 @@
-import { rgbToCmyk, rgbToHex, rgbToHsl, rgbToHsv } from ".";
+import { hexToCss, rgbToCmyk, rgbToHex, rgbToHsl, rgbToHsv } from ".";
 import { CIELab, CMYK, HSL, HSV, RGB, XYZ } from "../colorTypes";
 import { round } from "../utils";
 
@@ -25,6 +25,8 @@ export const xyzToRgb = (xyz: XYZ): RGB => {
 };
 
 export const xyzToHex = (xyz: XYZ): string => rgbToHex(xyzToRgb(xyz));
+
+export const xyzToCss = (xyz: XYZ, rgbOnly?: boolean) => hexToCss(xyzToHex(xyz), rgbOnly);
 
 export const xyzToHsl = (xyz: XYZ): HSL => rgbToHsl(xyzToRgb(xyz));
 

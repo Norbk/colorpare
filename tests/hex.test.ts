@@ -1,6 +1,6 @@
 import { Color } from "../src";
 
-describe("A Color created from the HRX string", () => {
+describe("A Color created from the HEX string", () => {
   describe("AF67D1", () => {
     const color = Color.fromHex("AF67D1");
     it("has the hex value given", () => {

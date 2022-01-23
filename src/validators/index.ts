@@ -2,6 +2,8 @@ import { CIELab, CMYK, HSL, HSV, RGB, XYZ } from "../colorTypes";
 
 export const isValidHex = (hex: string): boolean => (new RegExp("[0-9A-Fa-f]{6}", "g").test(hex));
 
+export const isValidCssRgb = (css: string): boolean => (new RegExp("rgb\\([0-9]{1,3}, ?[0-9]{1,3}, ?[0-9]{1,3}\\)", "g").test(css));
+
 export const isValidRgb = (rgb: RGB): boolean =>
   ((rgb.r <= 255 && rgb.r >= 0) && (rgb.g <= 255 && rgb.g >= 0) && (rgb.b <= 255 && rgb.b >= 0));
 

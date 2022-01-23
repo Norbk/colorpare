@@ -1,20 +1,22 @@
 import { cie2000, cie76, cie94 } from "./calculators";
 import { CIELab, CMYK, HSL, HSV, RGB, XYZ } from "./colorTypes";
 import {
-  hexToCIELab, hexToCmyk, hexToRgb, hexToXYZ, hexToHsl, hexToHsv,
-  rgbToCIELab, rgbToCmyk, rgbToHex, rgbToHsl, rgbToHsv, rgbToXyz,
-  hslToHex, hslToRgb, hslToHsv, hslToCmyk, hslToXyz, hslToCIELab,
-  hsvToHex, hsvToRgb, hsvToHsl, hsvToCmyk, hsvToXyz, hsvToCIELab,
-  cmykToHex, cmykToRgb, cmykToHsl, cmykToHsv, cmykToXyz, cmykToCIELab,
-  xyzToHex, xyzToRgb, xyzToHsl, xyzToHsv, xyzToCmyk, xyzToCIELab,
-  labToXyz, labToCmyk, labToHsv, labToRgb, labToHex, labToHsl
+  hexToCss, hexToCIELab, hexToCmyk, hexToRgb, hexToXYZ, hexToHsl, hexToHsv,
+  rgbToCss, rgbToCIELab, rgbToCmyk, rgbToHex, rgbToHsl, rgbToHsv, rgbToXyz,
+  hslToCss, hslToHex, hslToRgb, hslToHsv, hslToCmyk, hslToXyz, hslToCIELab,
+  hsvToCss, hsvToHex, hsvToRgb, hsvToHsl, hsvToCmyk, hsvToXyz, hsvToCIELab,
+  cmykToCss, cmykToHex, cmykToRgb, cmykToHsl, cmykToHsv, cmykToXyz, cmykToCIELab,
+  xyzToCss, xyzToHex, xyzToRgb, xyzToHsl, xyzToHsv, xyzToCmyk, xyzToCIELab,
+  labToCss, labToXyz, labToCmyk, labToHsv, labToRgb, labToHex, labToHsl
 } from "./converters";
-import { isValidCmyk, isValidHex, isValidHsl, isValidHsv, isValidLab, isValidRgb, isValidXyz } from "./validators";
+import { cssValues } from "./utils";
+import { isValidCmyk, isValidCssRgb, isValidHex, isValidHsl, isValidHsv, isValidLab, isValidRgb, isValidXyz } from "./validators";
 
 export class Color {
   
   private transform = (color: Color): Color => {
     this.hex = () => color.hex();
+    this.css = () => color.css();
     this.rgb = () => color.rgb();
     this.hsl = () => color.hsl();
     this.hsv = () => color.hsv();
@@ -25,6 +27,7 @@ export class Color {
   };
 
   public hex = (): string => "000000";
+  public css = (): string => "black";
   public rgb = (): RGB =>  ({ r: 0, g: 0, b: 0 });
   public hsl = (): HSL => ({ h: 0, s: 0, l: 0 });
   public hsv = (): HSV => ({ h: 0, s: 0, v: 0 });
@@ -33,6 +36,7 @@ export class Color {
   public lab = (): CIELab => ({ l: 0, a: 0, b: 0 });
   public all = ():Record<string, unknown> => ({
     hex: this.hex(),
+    css: this.css(),
     rgb: this.rgb(),
     hsl: this.hsl(),
     hsv: this.hsv(),
@@ -49,11 +53,23 @@ export class Color {
     };
   };
 
+  static fromCss = (css: string): Color => {
+    if(cssValues[css]) {
+      return this.fromHex(cssValues[css]);
+    } else if(isValidCssRgb(css)) {
+      const [r, g, b] = css.substring(4).replace(" ", "").split(",");
+      return this.fromRgb({r: parseInt(r), g: parseInt(g), b: parseInt(b)});
+    } else {
+      throw new Error(`${css} is not a valid css color value`);
+    }
+  };
+
   static fromHex = (hex: string): Color => {
     if(!isValidHex(hex))
       throw new Error(`${hex} is not a hexadecimal color value`);
     const color = new Color();
     color.hex = () => hex;
+    color.css = (rgbOnly?: boolean) => hexToCss(hex, rgbOnly);
     color.rgb = () => hexToRgb(hex);
     color.hsl = () => hexToHsl(hex);
     color.hsv = () => hexToHsv(hex);
@@ -69,6 +85,7 @@ export class Color {
     const color = new Color();
     color.rgb = () => rgb;
     color.hex = () => rgbToHex(rgb);
+    color.css = (rgbOnly?: boolean) => rgbToCss(rgb, rgbOnly);
     color.hsl = () => rgbToHsl(rgb);
     color.hsv = () => rgbToHsv(rgb);
     color.cmyk = () => rgbToCmyk(rgb);
@@ -83,6 +100,7 @@ export class Color {
     const color = new Color();
     color.hsl = () => hsl;
     color.hex = () => hslToHex(hsl);
+    color.css = (rgbOnly?: boolean) => hslToCss(hsl, rgbOnly);
     color.rgb = () => hslToRgb(hsl);
     color.hsv = () => hslToHsv(hsl);
     color.cmyk = () => hslToCmyk(hsl);
@@ -97,6 +115,7 @@ export class Color {
     const color = new Color();
     color.hsv = () => hsv;
     color.hex = () => hsvToHex(hsv);
+    color.css = (rgbOnly?: boolean) => hsvToCss(hsv, rgbOnly);
     color.rgb = () => hsvToRgb(hsv);
     color.hsl = () => hsvToHsl(hsv);
     color.cmyk = () => hsvToCmyk(hsv);
@@ -111,6 +130,7 @@ export class Color {
     const color = new Color();
     color.cmyk = () => cmyk;
     color.hex = () => cmykToHex(cmyk);
+    color.css = (rgbOnly?: boolean) => cmykToCss(cmyk, rgbOnly);
     color.rgb = () => cmykToRgb(cmyk);
     color.hsl = () => cmykToHsl(cmyk);
     color.hsv = () => cmykToHsv(cmyk);
@@ -125,6 +145,7 @@ export class Color {
     const color = new Color();
     color.xyz = () => xyz;
     color.hex = () => xyzToHex(xyz);
+    color.css = (rgbOnly?: boolean) => xyzToCss(xyz, rgbOnly);
     color.rgb = () => xyzToRgb(xyz);
     color.hsl = () => xyzToHsl(xyz);
     color.hsv = () => xyzToHsv(xyz);
@@ -139,6 +160,7 @@ export class Color {
     const color = new Color();
     color.lab = () => lab;
     color.hex = () => labToHex(lab);
+    color.css = (rgbOnly?: boolean) => labToCss(lab, rgbOnly);
     color.rgb = () => labToRgb(lab);
     color.hsl = () => labToHsl(lab);
     color.hsv = () => labToHsv(lab);
