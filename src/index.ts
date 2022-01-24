@@ -47,9 +47,9 @@ export class Color {
 
   public distanceFrom = (color: Color): Record<string, unknown> => {
     return {
-      cie76: cie76(this, color),
-      cie94: cie94(this, color),
-      cie2000: cie2000(this, color)
+      cie76: cie76(this.lab(), color.lab()),
+      cie94: cie94(this.lab(), color.lab()),
+      cie2000: cie2000(this.lab(), color.lab())
     };
   };
 
@@ -194,3 +194,17 @@ export class Color {
   A = (value: number): Color => this.transform(Color.fromLab({l: this.lab().l, a: value, b: this.lab().b}));
   B = (value: number): Color => this.transform(Color.fromLab({l: this.lab().l, a: this.lab().a, b: value}));
 }
+
+export {
+  hexToCss, hexToCIELab, hexToCmyk, hexToRgb, hexToXYZ, hexToHsl, hexToHsv,
+  rgbToCss, rgbToCIELab, rgbToCmyk, rgbToHex, rgbToHsl, rgbToHsv, rgbToXyz,
+  hslToCss, hslToHex, hslToRgb, hslToHsv, hslToCmyk, hslToXyz, hslToCIELab,
+  hsvToCss, hsvToHex, hsvToRgb, hsvToHsl, hsvToCmyk, hsvToXyz, hsvToCIELab,
+  cmykToCss, cmykToHex, cmykToRgb, cmykToHsl, cmykToHsv, cmykToXyz, cmykToCIELab,
+  xyzToCss, xyzToHex, xyzToRgb, xyzToHsl, xyzToHsv, xyzToCmyk, xyzToCIELab,
+  labToCss, labToXyz, labToCmyk, labToHsv, labToRgb, labToHex, labToHsl
+} from "./converters";
+
+export {
+  cie76, cie94, cie2000
+} from "./calculators";
