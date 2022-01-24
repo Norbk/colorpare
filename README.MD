@@ -10,13 +10,17 @@ npm i colorpare
 
 ## Usage
 ### Creating a color object.
-Supported spaces: `HEX`, `RGB`, `HSL`, `HSV`, `CMYK`, `XYZ`, `CIELab`.
+Supported color spaces: `HEX`, `CSS`, `RGB`, `HSL`, `HSV`, `CMYK`, `XYZ`, `CIELab`.
 ```js
 // default constructor - empty (black) color object
 const color = new Color();
 
 // from hex string
 const color = Color.fromHex("FA56E1");
+
+// from CSS
+const color = Color.fromCss("yellow");
+const color = Color.fromCss("rgb(123, 41, 219)");
 
 // from RGB values (r, g, b = 0 - 255)
 const color = Color.fromRgb({r: 10, g: 36, b: 192});
@@ -42,6 +46,8 @@ const color = Color.fromHex("FA56E1");
 
 color.hex() // FA56E1
 
+color.css() // generic colors names (yellow, black, brown, ...) or rgb string like rgb(32, 88, 51)
+
 color.rgb(); // { r: 250, g: 86, b: 225 }
 
 color.hsl(); // { h: 309, s: 94, l: 66 }
@@ -58,6 +64,7 @@ color.all();
 /*
 {
   hex: 'FA56E1',
+  css: 'rgb(250, 86, 225)',
   rgb: { r: 250, g: 86, b: 225 },
   hsl: { h: 309, s: 94, l: 66 },
   hsv: { h: 309, s: 66, v: 98 },
@@ -104,7 +111,7 @@ color.B(111);
 // You can also chain them together
 color.green(244).saturationHsl(20).yellow(10);
 ```
-## Distanse Calculation
+## Distance Calculation
 For now it supports CIE76, CIE94 and CIE2000.
 ```js
 const color1 = Color.fromHex("FFFFFF");
@@ -114,7 +121,7 @@ color1.distanceFrom(color2); // {cie76: 100, cie94: 100, cie2000: 100}
 ```
 ## What's next
 - &#9744; better hex constructor
-- &#9744; constructor for default css values like: `yellow`, `black`, `red`, `...`
-- &#9744; constructor for css rgb string values like: `rgb(255, 0, 0)`
-- &#9744; return function for css rgb
+- &#9745; constructor for default css values like: `yellow`, `black`, `red`, `...`
+- &#9745; constructor for css rgb string values like: `rgb(255, 0, 0)`
+- &#9745; return function for css rgb
 
