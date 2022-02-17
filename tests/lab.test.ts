@@ -1,8 +1,8 @@
-import { Color } from "../src";
+import { fromLab } from "../src";
 
 describe("A Color created from the CIELab object", () => {
   describe("{ l: 51.02, a: -24.71, b: 9.62 }", () => {
-    const color = Color.fromLab({ l: 51.02, a: -24.71, b: 9.62 });
+    const color = fromLab({ l: 51.02, a: -24.71, b: 9.62 });
     it("has the lab value given", () => {
       expect(color.lab()).toEqual({ l: 51.02, a: -24.71, b: 9.62 });
     });
@@ -28,8 +28,8 @@ describe("A Color created from the CIELab object", () => {
   describe("{ l: 51.02, a: -24.71, b: 9.62 }", () => {
     it("throws an error because it's invalid", () => {
       expect(() => {
-        Color.fromLab({ l: 51.02, a: -129, b: 128.01 });    
-      }).toThrowError("{\"l\":51.02,\"a\":-129,\"b\":128.01} is not a CIELab color value");
+        fromLab({ l: 51.02, a: -129, b: 128.01 });    
+      }).toThrowError("{\"l\":51.02,\"a\":-129,\"b\":128.01} is not a valid CIELab color value");
     });
   });
 });

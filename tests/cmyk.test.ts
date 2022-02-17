@@ -1,8 +1,8 @@
-import { Color } from "../src";
+import { fromCmyk } from "../src";
 
 describe("A Color created from the CMYK object", () => {
   describe("{ c: 61, m: 4, y: 22, k: 9 }", () => {
-    const color = Color.fromCmyk({ c: 61, m: 4, y: 22, k: 9 });
+    const color = fromCmyk({ c: 61, m: 4, y: 22, k: 9 });
     it("has the cmyk value given", () => {
       expect(color.cmyk()).toEqual({ c: 61, m: 4, y: 22, k: 9 });
     });
@@ -28,8 +28,8 @@ describe("A Color created from the CMYK object", () => {
   describe("{ c: -2, m: 101, y: 8, k: 0 }", () => {
     it("throws an error because it's invalid", () => {
       expect(() => {
-        Color.fromCmyk({ c: -2, m: 101, y: 8, k: 0 });    
-      }).toThrowError("{\"c\":-2,\"m\":101,\"y\":8,\"k\":0} is not a CMYK color value");
+        fromCmyk({ c: -2, m: 101, y: 8, k: 0 });    
+      }).toThrowError("{\"c\":-2,\"m\":101,\"y\":8,\"k\":0} is not a valid CMYK color value");
     });
   });
 });

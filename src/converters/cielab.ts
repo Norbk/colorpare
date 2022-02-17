@@ -1,9 +1,20 @@
-import { hexToCss, xyzToCmyk, xyzToHex, xyzToHsl, xyzToHsv, xyzToRgb } from ".";
-import { CIELab, CMYK, HSL, HSV, RGB, XYZ } from "../colorTypes";
+import { xyzToCmyk, xyzToCss, xyzToHex, xyzToHsl, xyzToHsv, xyzToRgb } from ".";
+import { CIELab, CMYK, HSL, HSV, Options, RGB, XYZ } from "../colorTypes";
 import { round } from "../utils";
+import { InvalidColorError, isValidLab } from "../validators";
 
-export const labToXyz = (lab: CIELab, roundTo = 2, ref?: XYZ): XYZ => {
-  const xyzR = ref ? ref : { x: 95.047, y: 100.00, z: 108.883 };
+const validator = <T, V>(
+  lab: CIELab, 
+  converter: (color: V, options?: Options
+) => T): (color: V, options?: Options) => T => {
+  if(!isValidLab(lab))
+    throw new InvalidColorError<CIELab>(lab, "CIELab");
+  return converter;
+};
+
+const toXyz = (lab: CIELab, options?: Options): XYZ => {
+  const roundTo = options?.roundTo || 2;
+  const xyzR = options?.xyzRef || { x: 95.047, y: 100.00, z: 108.883 };
   let _y = ( lab.l + 16 ) / 116;
   let _x = lab.a / 500 + _y;
   let _z = _y - lab.b / 200;
@@ -30,14 +41,16 @@ export const labToXyz = (lab: CIELab, roundTo = 2, ref?: XYZ): XYZ => {
   };
 };
 
-export const labToHex = (lab: CIELab): string => xyzToHex(labToXyz(lab));
+export const labToHex = (lab: CIELab): string => validator<string, XYZ>(lab, xyzToHex)(toXyz(lab));
 
-export const labToCss = (lab: CIELab, rgbOnly?: boolean): string => hexToCss(labToHex(lab), rgbOnly);
+export const labToCss = (lab: CIELab, options?: Options): string => validator<string, XYZ>(lab, xyzToCss)(toXyz(lab), options);
 
-export const labToRgb = (lab: CIELab): RGB => xyzToRgb(labToXyz(lab));
+export const labToRgb = (lab: CIELab): RGB => validator<RGB, XYZ>(lab, xyzToRgb)(toXyz(lab));
 
-export const labToHsl = (lab: CIELab): HSL => xyzToHsl(labToXyz(lab));
+export const labToHsl = (lab: CIELab, options?: Options): HSL => validator<HSL, XYZ>(lab, xyzToHsl)(toXyz(lab), options);
 
-export const labToHsv = (lab: CIELab): HSV => xyzToHsv(labToXyz(lab));
+export const labToHsv = (lab: CIELab, options?: Options): HSV => validator<HSV, XYZ>(lab, xyzToHsv)(toXyz(lab), options);
 
-export const labToCmyk = (lab: CIELab): CMYK => xyzToCmyk(labToXyz(lab));
+export const labToCmyk = (lab: CIELab): CMYK => validator<CMYK, XYZ>(lab, xyzToCmyk)(toXyz(lab));
+
+export const labToXyz = (lab: CIELab, options?: Options): XYZ => validator<XYZ, CIELab>(lab, toXyz)(lab, options);

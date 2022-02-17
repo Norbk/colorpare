@@ -1,8 +1,8 @@
-import { Color } from "../src";
+import { fromHex } from "../src";
 
 describe("A Color created from the HEX string", () => {
   describe("AF67D1", () => {
-    const color = Color.fromHex("AF67D1");
+    const color = fromHex("AF67D1");
     it("has the hex value given", () => {
       expect(color.hex()).toEqual("AF67D1");
     });
@@ -10,10 +10,10 @@ describe("A Color created from the HEX string", () => {
       expect(color.rgb()).toEqual({ r: 175, g: 103, b: 209 });
     });
     it("has the corresponding HSL value", () => {
-      expect(color.hsl()).toEqual({ h: 281, s: 54, l: 61 });
+      expect(color.hsl()).toEqual({ h: 280.75, s: 53.54, l: 61.18 });
     });
     it("has the corresponding HSV value", () => {
-      expect(color.hsv()).toEqual({ h: 281, s: 51, v: 82 });
+      expect(color.hsv()).toEqual({ h: 280.75, s: 50.72, v: 81.96 });
     });
     it("has the corresponding CMYK value", () => {
       expect(color.cmyk()).toEqual({ c: 16, m: 51, y: 0, k: 18 });
@@ -28,8 +28,8 @@ describe("A Color created from the HEX string", () => {
   describe("48FEAQ", () => {
     it("throws an error because it's invalid", () => {
       expect(() => {
-        Color.fromHex("48FEAQ");
-      }).toThrowError("48FEAQ is not a hexadecimal color value");
+        fromHex("48FEAQ");
+      }).toThrowError("\"48FEAQ\" is not a valid HEX color value");
     });
   });
 });

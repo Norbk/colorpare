@@ -1,5 +1,11 @@
 import { CIELab, CMYK, HSL, HSV, RGB, XYZ } from "../colorTypes";
 
+export class InvalidColorError<T> extends Error {
+  constructor(color: T, colorType: string) {
+    super(`${JSON.stringify(color)} is not a valid ${colorType} color value`);
+  }
+}
+
 export const isValidHex = (hex: string): boolean => (new RegExp("[0-9A-Fa-f]{6}", "g").test(hex));
 
 export const isValidCssRgb = (css: string): boolean => (new RegExp("rgb\\([0-9]{1,3}, ?[0-9]{1,3}, ?[0-9]{1,3}\\)", "g").test(css));
@@ -23,7 +29,7 @@ export const isValidCmyk = (cmyk: CMYK): boolean => (
 export const isValidXyz = (xyz: XYZ): boolean => (
   (xyz.x >= 0 && xyz.x <= 95.05) &&
   (xyz.y >= 0 && xyz.y <= 100) &&
-  (xyz.z >= 0 && xyz.z <= 108.88)
+  (xyz.z >= 0 && xyz.z <= 108.9)
 );
 
 export const isValidLab = (lab: CIELab): boolean => (

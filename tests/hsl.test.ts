@@ -1,8 +1,8 @@
-import { Color } from "../src";
+import { fromHsl } from "../src";
 
 describe("A Color created from the HSL object", () => {
   describe("{ h: 260, s: 45, l: 76 }", () => {
-    const color = Color.fromHsl({ h: 260, s: 45, l: 76 });
+    const color = fromHsl({ h: 260, s: 45, l: 76 });
     it("has the hsl value given", () => {
       expect(color.hsl()).toEqual({ h: 260, s: 45, l: 76 });
     });
@@ -28,8 +28,8 @@ describe("A Color created from the HSL object", () => {
   describe("{ h: 224, s: 109, l: -10 }", () => {
     it("throws an error because it's invalid", () => {
       expect(() => {
-        Color.fromHsl({ h: 224, s: 109, l: -10 });    
-      }).toThrowError("{\"h\":224,\"s\":109,\"l\":-10} is not a HSL color value");
+        fromHsl({ h: 224, s: 109, l: -10 });    
+      }).toThrowError("{\"h\":224,\"s\":109,\"l\":-10} is not a valid HSL color value");
     });
   });
 });
