@@ -1,8 +1,8 @@
-import { Color } from "../src";
+import { fromXyz } from "../src";
 
 describe("A Color created from the XYZ object", () => {
   describe("{ x: 76, y: 34, z: 21 }", () => {
-    const color = Color.fromXyz({ x: 76, y: 34, z: 21 });
+    const color = fromXyz({ x: 76, y: 34, z: 21 });
     it("has the cmyk value given", () => {
       expect(color.xyz()).toEqual({ x: 76, y: 34, z: 21 });
     });
@@ -28,8 +28,8 @@ describe("A Color created from the XYZ object", () => {
   describe("{ x: 1.23, y: 101, z: 63 }", () => {
     it("throws an error because it's invalid", () => {
       expect(() => {
-        Color.fromXyz({ x: 1.23, y: 101, z: 63 });    
-      }).toThrowError("{\"x\":1.23,\"y\":101,\"z\":63} is not an XYZ color value");
+        fromXyz({ x: 1.23, y: 101, z: 63 });    
+      }).toThrowError("{\"x\":1.23,\"y\":101,\"z\":63} is not a valid XYZ color value");
     });
   });
 });

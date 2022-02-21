@@ -1,8 +1,18 @@
-import { hexToCss, rgbToCIELab, rgbToHex, rgbToHsl, rgbToHsv, rgbToXyz } from ".";
-import { CIELab, CMYK, HSL, HSV, RGB, XYZ } from "../colorTypes";
+import { rgbToCIELab, rgbToCss, rgbToHex, rgbToHsl, rgbToHsv, rgbToXyz } from ".";
+import { CIELab, CMYK, HSL, HSV, Options, RGB, XYZ } from "../colorTypes";
 import { round } from "../utils";
+import { InvalidColorError, isValidCmyk } from "../validators";
 
-export const cmykToRgb = (cmyk: CMYK): RGB => {
+const validator = <T, V>(
+  cmyk: CMYK, 
+  converter: (color: V, options?: Options
+) => T): (color: V, options?: Options) => T => {
+  if(!isValidCmyk(cmyk))
+    throw new InvalidColorError<CMYK>(cmyk, "CMYK");
+  return converter;
+};
+
+const toRgb = (cmyk: CMYK): RGB => {
   const _c = (cmyk.c > 100 ? 100 : cmyk.c < 0 ? 0 : cmyk.c) / 100;
   const _m = (cmyk.m > 100 ? 100 : cmyk.m < 0 ? 0 : cmyk.m) / 100;
   const _y = (cmyk.y > 100 ? 100 : cmyk.m < 0 ? 0 : cmyk.y) / 100;
@@ -14,14 +24,16 @@ export const cmykToRgb = (cmyk: CMYK): RGB => {
   };
 };
 
-export const cmykToHex = (cmyk: CMYK): string => rgbToHex(cmykToRgb(cmyk));
+export const cmykToHex = (cmyk: CMYK): string => validator<string, RGB>(cmyk, rgbToHex)(toRgb(cmyk));
 
-export const cmykToCss = (cmyk: CMYK, rgbOnly?: boolean): string => hexToCss(cmykToHex(cmyk), rgbOnly);
+export const cmykToCss = (cmyk: CMYK, options?: Options): string => validator<string, RGB>(cmyk, rgbToCss)(toRgb(cmyk), options);
 
-export const cmykToHsl = (cmyk: CMYK, roundTo = 2): HSL => rgbToHsl(cmykToRgb(cmyk), roundTo);
+export const cmykToRgb = (cmyk: CMYK): RGB => validator<RGB, CMYK>(cmyk, toRgb)(cmyk);
 
-export const cmykToHsv = (cmyk: CMYK, roundTo = 2): HSV => rgbToHsv(cmykToRgb(cmyk), roundTo);
+export const cmykToHsl = (cmyk: CMYK, options?: Options): HSL => validator<HSL, RGB>(cmyk, rgbToHsl)(toRgb(cmyk), options);
 
-export const cmykToXyz = (cmyk: CMYK, roundTo = 2): XYZ => rgbToXyz(cmykToRgb(cmyk), roundTo);
+export const cmykToHsv = (cmyk: CMYK, options?: Options): HSV => validator<HSV, RGB>(cmyk, rgbToHsv)(toRgb(cmyk), options);
 
-export const cmykToCIELab = (cmyk: CMYK, roundTo = 2): CIELab => rgbToCIELab(cmykToRgb(cmyk), roundTo);
+export const cmykToXyz = (cmyk: CMYK, options?: Options): XYZ => validator<XYZ, RGB>(cmyk, rgbToXyz)(toRgb(cmyk), options);
+
+export const cmykToCIELab = (cmyk: CMYK, options?: Options): CIELab => validator<CIELab, RGB>(cmyk, rgbToCIELab)(toRgb(cmyk), options);

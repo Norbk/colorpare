@@ -1,8 +1,8 @@
-import { Color } from "../src";
+import { fromRgb } from "../src";
 
 describe("A Color created from the RGB object", () => {
   describe("{ r: 167, g: 45, b: 89 }", () => {
-    const color = Color.fromRgb({ r: 167, g: 45, b: 89 });
+    const color = fromRgb({ r: 167, g: 45, b: 89 });
     it("has the rgb value given", () => {
       expect(color.rgb()).toEqual({ r: 167, g: 45, b: 89 });
     });
@@ -28,8 +28,8 @@ describe("A Color created from the RGB object", () => {
   describe("{ r: 167, g: 258, b: -10 }", () => {
     it("throws an error because it's invalid", () => {
       expect(() => {
-        Color.fromRgb({ r: 167, g: 258, b: -10 });    
-      }).toThrowError("{\"r\":167,\"g\":258,\"b\":-10} is not an RGB color value");
+        fromRgb({ r: 167, g: 258, b: -10 });    
+      }).toThrowError("{\"r\":167,\"g\":258,\"b\":-10} is not a valid RGB color value");
     });
   });
 });

@@ -1,8 +1,8 @@
-import { Color } from "../src";
+import { fromHsv } from "../src";
 
 describe("A Color created from the HSV object", () => {
   describe("{ h: 260, s: 45, v: 19 }", () => {
-    const color = Color.fromHsv({ h: 260, s: 45, v: 19 });
+    const color = fromHsv({ h: 260, s: 45, v: 19 });
     it("has the hsv value given", () => {
       expect(color.hsv()).toEqual({ h: 260, s: 45, v: 19 });
     });
@@ -28,8 +28,8 @@ describe("A Color created from the HSV object", () => {
   describe("{ h: 224, s: 109, v: -10 }", () => {
     it("throws an error because it's invalid", () => {
       expect(() => {
-        Color.fromHsv({ h: 224, s: 109, v: -10 });    
-      }).toThrowError("{\"h\":224,\"s\":109,\"v\":-10} is not a HSV color value");
+        fromHsv({ h: 224, s: 109, v: -10 });    
+      }).toThrowError("{\"h\":224,\"s\":109,\"v\":-10} is not a valid HSV color value");
     });
   });
 });

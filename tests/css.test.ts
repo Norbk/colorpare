@@ -1,8 +1,8 @@
-import { Color } from "../src";
+import { fromCss } from "../src";
 
 describe("A Color created from the CSS string", () => {
   describe("yellow", () => {
-    const color = Color.fromCss("darkseagreen");
+    const color = fromCss("darkseagreen");
     it("has the hex value given", () => {
       expect(color.hex()).toEqual("8fbc8f");
     });
@@ -10,10 +10,10 @@ describe("A Color created from the CSS string", () => {
       expect(color.rgb()).toEqual({ r: 143, g: 188, b: 143 });
     });
     it("has the corresponding HSL value", () => {
-      expect(color.hsl()).toEqual({ h: 120, s: 25, l: 65 });
+      expect(color.hsl()).toEqual({ h: 120, s: 25.14, l: 64.9 });
     });
     it("has the corresponding HSV value", () => {
-      expect(color.hsv()).toEqual({ h: 120, s: 24, v: 74 });
+      expect(color.hsv()).toEqual({ h: 120, s: 23.94, v: 73.73 });
     });
     it("has the corresponding CMYK value", () => {
       expect(color.cmyk()).toEqual({ c: 24, m: 0, y: 24, k: 26 });
@@ -26,7 +26,7 @@ describe("A Color created from the CSS string", () => {
     });
   });
   describe("rgb(81, 203, 114)", () => {
-    const color = Color.fromCss("rgb(81, 203, 114)");
+    const color = fromCss("rgb(81, 203, 114)");
     it("has the hex value given", () => {
       expect(color.hex()).toEqual("51CB72");
     });
@@ -52,22 +52,22 @@ describe("A Color created from the CSS string", () => {
   describe("darkeyebrowbrown", () => {
     it("throws an error because it's invalid", () => {
       expect(() => {
-        Color.fromCss("darkeyebrowbrown");
-      }).toThrowError("darkeyebrowbrown is not a valid css color value");
+        fromCss("darkeyebrowbrown");
+      }).toThrowError("\"darkeyebrowbrown\" is not a valid CSS color value");
     });
   });
   describe("rgb(261, -987, 0)", () => {
     it("throws an error because it's invalid", () => {
       expect(() => {
-        Color.fromCss("rgb(261, -987, 0)");
-      }).toThrowError("rgb(261, -987, 0) is not a valid css color value");
+        fromCss("rgb(261, -987, 0)");
+      }).toThrowError("\"rgb(261, -987, 0)\" is not a valid CSS color value");
     });
   });
   describe("rgb(261, 28, 33)", () => {
     it("throws an error because it's invalid", () => {
       expect(() => {
-        Color.fromCss("rgb(261, 28, 33)");
-      }).toThrowError("{\"r\":261,\"g\":28,\"b\":33} is not an RGB color value");
+        fromCss("rgb(261, 28, 33)");
+      }).toThrowError("{\"r\":261,\"g\":28,\"b\":33} is not a valid RGB color value");
     });
   });
 });

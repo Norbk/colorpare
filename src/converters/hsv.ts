@@ -1,8 +1,18 @@
-import { hexToCss, rgbToCIELab, rgbToCmyk, rgbToHex, rgbToXyz } from ".";
-import { CIELab, CMYK, HSL, HSV, RGB, XYZ } from "../colorTypes";
+import { rgbToCIELab, rgbToCmyk, rgbToCss, rgbToHex, rgbToXyz } from ".";
+import { CIELab, CMYK, HSL, HSV, Options, RGB, XYZ } from "../colorTypes";
 import { round } from "../utils";
+import { InvalidColorError, isValidHsv } from "../validators";
 
-export const hsvToRgb = (hsv: HSV): RGB => {
+const validator = <T, V>(
+  hsv: HSV, 
+  converter: (color: V, options?: Options
+) => T): (color: V, options?: Options) => T => {
+  if(!isValidHsv(hsv))
+    throw new InvalidColorError<HSV>(hsv, "HSV");
+  return converter;
+};
+
+const toRgb = (hsv: HSV): RGB => {
   const _h = (hsv.h < 0 ? 0 : hsv.h > 360 ? 360 : hsv.h) / 60;
   const _s = (hsv.s < 0 ? 0 : hsv.s > 100 ? 100 : hsv.s) / 100;
   const _v = (hsv.v < 0 ? 0 : hsv.v > 100 ? 100 : hsv.v) / 100;
@@ -38,11 +48,8 @@ export const hsvToRgb = (hsv: HSV): RGB => {
   };
 };
 
-export const hsvToHex = (hsv: HSV): string => rgbToHex(hsvToRgb(hsv));
-
-export const hsvToCss = (hsv: HSV, rgbOnly?: boolean): string => hexToCss(hsvToHex(hsv), rgbOnly);
-
-export const hsvToHsl = (hsv: HSV, roundTo = 2): HSL => {
+const toHsl = (hsv: HSV, options?: Options): HSL => {
+  const roundTo = options?.roundTo || 2;
   const hsl: HSL = { h: hsv.h, s: 0, l: 0 };
 
   const _s = hsv.s / 100;
@@ -55,8 +62,16 @@ export const hsvToHsl = (hsv: HSV, roundTo = 2): HSL => {
   return hsl;
 };
 
-export const hsvToCmyk = (hsv: HSV): CMYK => rgbToCmyk(hsvToRgb(hsv));
+export const hsvToHex = (hsv: HSV): string => validator<string, RGB>(hsv, rgbToHex)(toRgb(hsv));
 
-export const hsvToXyz = (hsv: HSV, roundTo = 2): XYZ => rgbToXyz(hsvToRgb(hsv), roundTo);
+export const hsvToCss = (hsv: HSV, options?: Options): string => validator<string, RGB>(hsv, rgbToCss)(toRgb(hsv), options);
 
-export const hsvToCIELab = (hsv: HSV, roundTo = 2) : CIELab => rgbToCIELab(hsvToRgb(hsv), roundTo);
+export const hsvToRgb = (hsv: HSV): RGB => validator<RGB, HSV>(hsv, toRgb)(hsv);
+
+export const hsvToHsl = (hsv: HSV, options?: Options): HSL => validator<HSL, HSV>(hsv, toHsl)(hsv, options);
+
+export const hsvToCmyk = (hsv: HSV): CMYK => validator<CMYK, RGB>(hsv, rgbToCmyk)(toRgb(hsv));
+
+export const hsvToXyz = (hsv: HSV, options?: Options): XYZ => validator<XYZ, RGB>(hsv, rgbToXyz)(toRgb(hsv), options);
+
+export const hsvToCIELab = (hsv: HSV, options?: Options): CIELab => validator<CIELab, RGB>(hsv, rgbToCIELab)(toRgb(hsv), options);

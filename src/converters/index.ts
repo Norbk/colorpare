@@ -1,4 +1,4 @@
-export { hexToRgb, hexToCss, hexToHsl, hexToHsv, hexToCmyk, hexToXYZ, hexToCIELab } from "./hex";
+export { hexToRgb, hexToCss, hexToHsl, hexToHsv, hexToCmyk, hexToXyz, hexToCIELab } from "./hex";
 export { rgbToHex, rgbToCss, rgbToHsl, rgbToHsv, rgbToCmyk, rgbToXyz, rgbToCIELab } from "./rgb";
 export { hslToHex, hslToCss, hslToRgb, hslToHsv, hslToCmyk, hslToXyz, hslToCIELab } from "./hsl";
 export { hsvToHex, hsvToCss, hsvToRgb, hsvToHsl, hsvToCmyk, hsvToXyz, hsvToCIELab } from "./hsv";
