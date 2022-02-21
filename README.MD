@@ -1,4 +1,16 @@
-# Colorpare
+<h1 align="center" style="font-size: 60px">
+</br>
+  <span style="color: red">C</span>
+  <span style="color: green">O</span>
+  <span style="color: blue">L</span>
+  <span style="color: pink">O</span>
+  <span style="color: cyan">R</span>
+  <span style="color: yellow">P</span>
+  <span style="color: grey">A</span>
+  <span style="color: purple">R</span>
+  <span style="color: orange">E</span>
+</br>
+</h1>
 A typescript/javascript library for color translation, transformation and comparison.
 
 Supports ESM and CommonJS.
@@ -9,40 +21,44 @@ npm i colorpare
 ```
 
 ## Usage
-### Creating a color object.
+You can either create a Color object and use that to compare, transform and translate the color you want, or you can import specific function individualy.
+
 Supported color spaces: `HEX`, `CSS`, `RGB`, `HSL`, `HSV`, `CMYK`, `XYZ`, `CIELab`.
+
+### Creating a color object.
+For creating a Color object, use one of the `from...` method.
 ```js
-// default constructor - empty (black) color object
-const color = new Color();
+import { fromHex, fromCss, fromRgb, fromHsl, fromHsv, fromCmyk, from Xyz, fromCIELab } from "colorpare";
 
 // from hex string
-const color = Color.fromHex("FA56E1");
+const color = fromHex("FA56E1");
 
 // from CSS
-const color = Color.fromCss("yellow");
-const color = Color.fromCss("rgb(123, 41, 219)");
+const color = fromCss("yellow");
+const color = fromCss("rgb(123, 41, 219)");
 
 // from RGB values (r, g, b = 0 - 255)
-const color = Color.fromRgb({r: 10, g: 36, b: 192});
+const color = fromRgb({r: 10, g: 36, b: 192});
 
 // from HSL values (h = 0 - 360; s, l = 0 - 100)
-const color = Color.fromHsl({h: 240, s: 11, l: 37});
+const color = fromHsl({h: 240, s: 11, l: 37});
 
 // from HSV values (h = 0 - 360; s, v = 0 - 100)
-const color = Color.fromHsv({h: 240, s: 11, v: 37});
+const color = fromHsv({h: 240, s: 11, v: 37});
 
 // from CMYK values (c, m, y, k = 0 - 100)
-const color = Color.fromCmyk(c: 3, m: 89, y: 29, k: 4);
+const color = fromCmyk(c: 3, m: 89, y: 29, k: 4);
 
 // from XYZ values (x = 0 - 95.05; y = 0 - 100; z = 0 - 108.88)
-const color = Color.fromXyz(x: 45.3, y: 23.4, z: 78.9);
+const color = fromXyz(x: 45.3, y: 23.4, z: 78.9);
 
 // from CIELab values (l = 0 - 100; a, b = -128 - 128)
-const color = Color.fromLab(l: 74, a = -41.02, b: 81.160;
+const color = fromLab(l: 74, a = -41.02, b: 81.160;
 ```
-Getting specific color space values:
+### Conversion
+Getting specific color space values from the color object:
 ```js
-const color = Color.fromHex("FA56E1");
+const color = fromHex("FA56E1");
 
 color.hex() // FA56E1
 
@@ -59,23 +75,9 @@ color.cmyk(); // { c: 0, m: 66, y: 10, k: 2 }
 color.xyz(); // { x: 56.34, y: 32.42, z: 74.52 }
 
 color.lab(); // { l: 63.69, a: 76.53, b: -38.86 }
-
-color.all();
-/*
-{
-  hex: 'FA56E1',
-  css: 'rgb(250, 86, 225)',
-  rgb: { r: 250, g: 86, b: 225 },
-  hsl: { h: 309, s: 94, l: 66 },
-  hsv: { h: 309, s: 66, v: 98 },
-  cmyk: { c: 0, m: 66, y: 10, k: 2 },
-  xyz: { x: 56.34, y: 32.42, z: 74.52 },
-  lab: { l: 63.69, a: 76.53, b: -38.86 }
-}
-*/
 ```
-## Transformation
-You can transform a color based on any of the color spaces (except for HEX, just create a new color with that).
+### Transformation
+You can transform a color based on any of the color spaces (except for string based like Hex and CSS, just create a new color with those).
 ```js
 // RGB
 color.red(121);
@@ -111,22 +113,38 @@ color.B(111);
 // You can also chain them together
 color.green(244).saturationHsl(20).yellow(10);
 ```
-## Distance Calculation
+### Distance Calculation
 For now it supports CIE76, CIE94 and CIE2000.
 ```js
-const color1 = Color.fromHex("FFFFFF");
-const color2 = Color.fromHex("000000");
+import { fromHex } from "colorpare";
+
+const color1 = fromHex("FFFFFF");
+const color2 = fromHex("000000");
 
 color1.distanceFrom(color2); // {cie76: 100, cie94: 100, cie2000: 100}
 ```
 ## Converter functions
-If you don't need the Color object abd you're only here fir the conversion functions, you can have that separate as well.
+If you don't need the Color object and you're only here for the conversion functions, you can have that separate as well.
 ```js
-import 
+import { rgbToHsl } from "colorpare";
 
-## What's next
-- &#9744; better hex constructor
-- &#9745; constructor for default css values like: `yellow`, `black`, `red`, `...`
-- &#9745; constructor for css rgb string values like: `rgb(255, 0, 0)`
-- &#9745; return function for css rgb
+const hsl = rgbToHsl({r: 34, g: 181, b: 74});
 
+console.log(hsl); // { h: 136.33, s: 68.37, l: 42.16 }
+```
+
+## Distance calculators
+Distance calculator functions are accessibly separately as well, but they only takes `CIELab` color values. To use them with other spaces, one needs to use converter functions as well.
+
+Supported ones are `CIE74`, `CIE96` and `CIE2000`.
+
+```js
+import { rgbToCIELab, hsvToCIELab, cie76, cie94, cie2000 } from "colorpare";
+
+const rgb = {r: 123, g: 234, b: 192};
+const hsv = {h: 181, s: 52, v: 61};
+
+console.log(cie76(rgbToCIELab(rgb), hsvToCIELab(hsv))); // 37.27
+console.log(cie94(rgbToCIELab(rgb), hsvToCIELab(hsv))); // 29.57
+console.log(cie2000(rgbToCIELab(rgb), hsvToCIELab(hsv))); // 24.44
+```
