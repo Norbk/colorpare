@@ -34,9 +34,9 @@ npm i colorpare
 
 ---
 
-## Color Object (the `from` methods)
+## Color Object (`from...` methods)
 
-To create a `Color` object and use that to compare, transform and translate the color, you can use the `from` methods. All the supported color spaces and formats have their corresponding ones.
+To create a `Color` object and use that to compare, transform and translate the color, you can use the `from...` methods. All the supported color spaces and formats have their corresponding ones.
 
 ```javascript
 import { fromHex, fromCss, fromRgb, fromHsl, fromHsv, fromCmyk, fromXyz, fromCIELab } from "colorpare";
