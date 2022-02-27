@@ -1,34 +1,45 @@
 <h1 align="center" style="font-size: 60px">
 </br>
-  <span style="color: red">C</span>
-  <span style="color: green">O</span>
-  <span style="color: blue">L</span>
-  <span style="color: pink">O</span>
-  <span style="color: cyan">R</span>
-  <span style="color: yellow">P</span>
-  <span style="color: grey">A</span>
-  <span style="color: purple">R</span>
-  <span style="color: orange">E</span>
+  <img width="500px" src="logo/v1.svg" />
 </br>
 </h1>
-A typescript/javascript library for color translation, transformation and comparison.
+<article>
+  <p align="center">
+  A typescript/javascript library for color translation, transformation and comparison. Supports ESM and CommonJS.
+  </p>
+</article>
+<article>
+<h3 align="center">
+Supported Color Spaces
+</h3>
+<p align="center" >
+HEX, CSS, RGB, HSL, HSV, CMYK, XYZ, CIELab
+</p>
+</article>
+<article>
+<h3 align="center">
+Supported Color Distances
+</h3>
+<p align="center" >
+CIE76, CIE94, CIE2000
+</p>
+</article>
 
-Supports ESM and CommonJS.
+---
 
 ## Install
 ```
 npm i colorpare
 ```
 
-## Usage
-You can either create a Color object and use that to compare, transform and translate the color you want, or you can import specific function individualy.
+---
 
-Supported color spaces: `HEX`, `CSS`, `RGB`, `HSL`, `HSV`, `CMYK`, `XYZ`, `CIELab`.
+## Color Object (the `from` methods)
 
-### Creating a color object.
-For creating a Color object, use one of the `from...` method.
-```js
-import { fromHex, fromCss, fromRgb, fromHsl, fromHsv, fromCmyk, from Xyz, fromCIELab } from "colorpare";
+To create a `Color` object and use that to compare, transform and translate the color, you can use the `from` methods. All the supported color spaces and formats have their corresponding ones.
+
+```javascript
+import { fromHex, fromCss, fromRgb, fromHsl, fromHsv, fromCmyk, fromXyz, fromCIELab } from "colorpare";
 
 // from hex string
 const color = fromHex("FA56E1");
@@ -36,10 +47,6 @@ const color = fromHex("FA56E1");
 // from CSS
 const color = fromCss("yellow");
 const color = fromCss("rgb(123, 41, 219)");
-
-// from CSS
-const color = Color.fromCss("yellow");
-const color = Color.fromCss("rgb(123, 41, 219)");
 
 // from RGB values (r, g, b = 0 - 255)
 const color = fromRgb({r: 10, g: 36, b: 192});
@@ -118,7 +125,7 @@ color.B(111);
 color.green(244).saturationHsl(20).yellow(10);
 ```
 ### Distance Calculation
-For now it supports CIE76, CIE94 and CIE2000.
+Compare two color objects to measure the distance between the two.
 ```js
 import { fromHex } from "colorpare";
 
@@ -127,8 +134,11 @@ const color2 = fromHex("000000");
 
 color1.distanceFrom(color2); // {cie76: 100, cie94: 100, cie2000: 100}
 ```
-## Converter functions
-If you don't need the Color object and you're only here for the conversion functions, you can have that separate as well.
+
+---
+
+## Converters (`...to...` functions)
+If you don't need the `Color` object and you're only here for the converter functions, you can access them directly. All color spaces have their corresponding `...to...` functions to convert them to all the other spaces.
 ```js
 import { rgbToHsl } from "colorpare";
 
@@ -137,10 +147,10 @@ const hsl = rgbToHsl({r: 34, g: 181, b: 74});
 console.log(hsl); // { h: 136.33, s: 68.37, l: 42.16 }
 ```
 
-## Distance calculators
-Distance calculator functions are accessibly separately as well, but they only takes `CIELab` color values. To use them with other spaces, one needs to use converter functions as well.
+---
 
-Supported ones are `CIE74`, `CIE96` and `CIE2000`.
+## Distance calculators
+Distance calculator functions are accessible separately as well, but they only takes `CIELab` color values. To use them with other spaces, one needs to use `...to...` converter functions.
 
 ```js
 import { rgbToCIELab, hsvToCIELab, cie76, cie94, cie2000 } from "colorpare";
