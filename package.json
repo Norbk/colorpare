@@ -1,6 +1,6 @@
 {
   "name": "colorpare",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "A typescript/javascript library for color translation, transformation and comparison.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -15,9 +15,19 @@
     "color",
     "colors",
     "colour",
+    "convert",
+    "converter",
     "compare",
     "translate",
-    "transform"
+    "transform",
+    "hex",
+    "rgb",
+    "hsl",
+    "hsv",
+    "cmyk",
+    "css",
+    "xyz",
+    "cielab"
   ],
   "author": "NorbK <kozarin@gmail.com>",
   "repository": "Norbk/colorpare",
