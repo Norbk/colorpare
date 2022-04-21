@@ -43,7 +43,7 @@ export type Options = {
 
 export type Color = {
   hex(): string
-  css(cssRgbOnly?: boolean): string
+  css(): string
   rgb(): RGB
   hsl(): HSL
   hsv(): HSV

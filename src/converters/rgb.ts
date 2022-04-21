@@ -49,7 +49,8 @@ const toHex = (rgb: RGB): string => {
 
 const toCss = (rgb: RGB, options?: Options): string => {
   if(!options?.cssRgbOnly) {
-    const colorName = Object.keys(cssValues).find(key => cssValues[key] === toHex(rgb));
+    const hex = toHex(rgb).toLowerCase();
+    const colorName = Object.keys(cssValues).find(key => cssValues[key] === hex);
     if(colorName)
       return colorName;
   }

@@ -171,3 +171,12 @@ There are a number of options you may pass to the `from...`, or to certain `...t
 | cssRgbOnly | false | Sets the converter to avoid using CSS color values (yellow, black, ...) and only use rgb string like `rgb(12, 24, 36)`. |
 | roundTo | 2 | Sets certain color values to be rounded to a given digit `(hsl, hsv, xyz, cielab)`. |
 | xyzRef | <pre>{<br>  x: 95.047,<br>  y: 100.00,<br>  z: 108.883<br>}</pre> | Set an XYZ reference white value for XYZ and CIELab conversions. |
+
+```js
+const color = fromHex("DC143C", {cssRgbOnly: true, roundTo: 3})
+
+console.log(color.css()) // rgb(220, 20, 60) isntead of the string: crimson
+console.log(color.hsv()) // { h: 348, s: 90.909, v: 86.275 }
+
+console.log(rgbToCIELab({r: 132, g: 47, b: 211}, {roundTo: 4})) // { l: 40.6409, a: 64.1968, b: -68.7356 }
+```
