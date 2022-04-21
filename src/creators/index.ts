@@ -8,7 +8,7 @@ import {
   labToCss, labToXyz, labToCmyk, labToHsv, labToRgb, labToHex, labToHsl
 } from "../converters";
 
-import { Color, CIELab, CMYK, HSL, HSV, RGB, XYZ } from "../colorTypes";
+import { Color, CIELab, CMYK, HSL, HSV, RGB, XYZ, Options } from "../colorTypes";
 
 import { cie76, cie94, cie2000 } from "../calculators";
 
@@ -50,139 +50,125 @@ const addDistanceCalculation = (color: Color): Color => {
   return color;
 };
 
-export const fromHex = (hex: string): Color => {
+export const fromHex = (hex: string, options?: Options): Color => {
   if(!isValidHex(hex))
     throw new InvalidColorError<string>(hex, "HEX");
   const color = <Color> {
     hex:  () => hex,
-    css:  (rgbOnly?: boolean) => hexToCss(hex, { rgbOnly }),
+    css:  () => hexToCss(hex, options),
     rgb:  () => hexToRgb(hex),
-    hsl:  () => hexToHsl(hex),
-    hsv:  () => hexToHsv(hex),
+    hsl:  () => hexToHsl(hex, options),
+    hsv:  () => hexToHsv(hex, options),
     cmyk: () => hexToCmyk(hex),
-    xyz:  () => hexToXyz(hex),
-    lab:  () => hexToCIELab(hex)
+    xyz:  () => hexToXyz(hex, options),
+    lab:  () => hexToCIELab(hex, options)
   };
-  addTransformation(color);
-  addDistanceCalculation(color);
-  return color;
+  return addTransformation(addDistanceCalculation(color));
 };
 
-export const fromRgb = (rgb: RGB): Color => {
+export const fromRgb = (rgb: RGB, options?: Options): Color => {
   if(!isValidRgb(rgb))
     throw new InvalidColorError<RGB>(rgb, "RGB");
   const color = <Color> {
     rgb:  ()=> rgb,
     hex:  () => rgbToHex(rgb),
-    css:  (rgbOnly?: boolean) => rgbToCss(rgb, { rgbOnly }),
-    hsl:  () => rgbToHsl(rgb),
-    hsv:  () => rgbToHsv(rgb),
+    css:  () => rgbToCss(rgb, options),
+    hsl:  () => rgbToHsl(rgb, options),
+    hsv:  () => rgbToHsv(rgb, options),
     cmyk: () => rgbToCmyk(rgb),
-    xyz: () => rgbToXyz(rgb),
-    lab: () => rgbToCIELab(rgb)
+    xyz: () => rgbToXyz(rgb, options),
+    lab: () => rgbToCIELab(rgb, options)
   };
-  addTransformation(color);
-  addDistanceCalculation(color);
-  return color;
+  return addTransformation(addDistanceCalculation(color));
 };
 
-export const fromCss = (css: string): Color => {
+export const fromCss = (css: string, options?: Options): Color => {
   if(cssValues[css]) {
-    return fromHex(cssValues[css]);
+    return fromHex(cssValues[css], options);
   } else if(isValidCssRgb(css)) {
     const [r, g, b] = css.substring(4).replace(" ", "").split(",");
-    return fromRgb({r: parseInt(r), g: parseInt(g), b: parseInt(b)});
+    return fromRgb({r: parseInt(r), g: parseInt(g), b: parseInt(b)}, options);
   } else {
     throw new InvalidColorError<string>(css, "CSS");
   }
 };
   
-export const fromHsl = (hsl: HSL): Color => {
+export const fromHsl = (hsl: HSL, options?: Options): Color => {
   if(!isValidHsl(hsl))
     throw new InvalidColorError<HSL>(hsl, "HSL");
   const color = <Color> {
     hsl: () => hsl,
     hex: () => hslToHex(hsl),
-    css: (rgbOnly?: boolean) => hslToCss(hsl, { rgbOnly }),
+    css: () => hslToCss(hsl, options),
     rgb: () => hslToRgb(hsl),
-    hsv: () => hslToHsv(hsl),
+    hsv: () => hslToHsv(hsl, options),
     cmyk: () => hslToCmyk(hsl),
-    xyz: () => hslToXyz(hsl),
-    lab: () => hslToCIELab(hsl)
+    xyz: () => hslToXyz(hsl, options),
+    lab: () => hslToCIELab(hsl, options)
   };
-  addTransformation(color);
-  addDistanceCalculation(color);
-  return color;
+  return addTransformation(addDistanceCalculation(color));
 };
 
-export const fromHsv = (hsv: HSV): Color => {
+export const fromHsv = (hsv: HSV, options?: Options): Color => {
   if(!isValidHsv(hsv))
     throw new InvalidColorError<HSV>(hsv, "HSV");
   const color = <Color> {
     hsv: () => hsv,
     hex: () => hsvToHex(hsv),
-    css: (rgbOnly?: boolean) => hsvToCss(hsv, { rgbOnly }),
+    css: () => hsvToCss(hsv, options),
     rgb: () => hsvToRgb(hsv),
-    hsl: () => hsvToHsl(hsv),
+    hsl: () => hsvToHsl(hsv, options),
     cmyk: () => hsvToCmyk(hsv),
-    xyz: () => hsvToXyz(hsv),
-    lab: () => hsvToCIELab(hsv)
+    xyz: () => hsvToXyz(hsv, options),
+    lab: () => hsvToCIELab(hsv, options)
   };
-  addTransformation(color);
-  addDistanceCalculation(color);
-  return color;
+  return addTransformation(addDistanceCalculation(color));
 };
 
-export const fromCmyk = (cmyk: CMYK): Color => {
+export const fromCmyk = (cmyk: CMYK, options?: Options): Color => {
   if(!isValidCmyk(cmyk))
     throw new InvalidColorError<CMYK>(cmyk, "CMYK");
   const color = <Color> {
     cmyk: () => cmyk,
     hex: () => cmykToHex(cmyk),
-    css: (rgbOnly?: boolean) => cmykToCss(cmyk, { rgbOnly }),
+    css: () => cmykToCss(cmyk, options),
     rgb: () => cmykToRgb(cmyk),
-    hsl: () => cmykToHsl(cmyk),
-    hsv: () => cmykToHsv(cmyk),
-    xyz: () => cmykToXyz(cmyk),
-    lab: () => cmykToCIELab(cmyk)
+    hsl: () => cmykToHsl(cmyk, options),
+    hsv: () => cmykToHsv(cmyk, options),
+    xyz: () => cmykToXyz(cmyk, options),
+    lab: () => cmykToCIELab(cmyk, options)
   };
-  addTransformation(color);
-  addDistanceCalculation(color);
-  return color;
+  return addTransformation(addDistanceCalculation(color));
 };
 
-export const fromXyz = (xyz: XYZ): Color => {
+export const fromXyz = (xyz: XYZ, options?: Options): Color => {
   if(!isValidXyz(xyz))
     throw new InvalidColorError<XYZ>(xyz, "XYZ");
   const color = <Color> {
     xyz: () => xyz,
     hex: () => xyzToHex(xyz),
-    css: (rgbOnly?: boolean) => xyzToCss(xyz, { rgbOnly }),
+    css: () => xyzToCss(xyz, options),
     rgb: () => xyzToRgb(xyz),
-    hsl: () => xyzToHsl(xyz),
-    hsv: () => xyzToHsv(xyz),
+    hsl: () => xyzToHsl(xyz, options),
+    hsv: () => xyzToHsv(xyz, options),
     cmyk: () => xyzToCmyk(xyz),
-    lab: () => xyzToCIELab(xyz)
+    lab: () => xyzToCIELab(xyz, options)
   };
-  addTransformation(color);
-  addDistanceCalculation(color);
-  return color;
+  return addTransformation(addDistanceCalculation(color));
 };
 
-export const fromLab = (lab: CIELab): Color => {
+export const fromLab = (lab: CIELab, options?: Options): Color => {
   if(!isValidLab(lab))
     throw new InvalidColorError<CIELab>(lab, "CIELab");
   const color = <Color> {
     lab: () => lab,
     hex: () => labToHex(lab),
-    css: (rgbOnly?: boolean) => labToCss(lab, { rgbOnly }),
+    css: () => labToCss(lab, options),
     rgb: () => labToRgb(lab),
-    hsl: () => labToHsl(lab),
-    hsv: () => labToHsv(lab),
+    hsl: () => labToHsl(lab, options),
+    hsv: () => labToHsv(lab, options),
     cmyk: () => labToCmyk(lab),
-    xyz: () => labToXyz(lab)
+    xyz: () => labToXyz(lab, options)
   };
-  addTransformation(color);
-  addDistanceCalculation(color);
-  return color;
+  return addTransformation(addDistanceCalculation(color));
 };

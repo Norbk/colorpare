@@ -37,13 +37,13 @@ export type CIELab = {
 
 export type Options = {
   roundTo?: number
-  rgbOnly?: boolean
+  cssRgbOnly?: boolean
   xyzRef?: XYZ
 }
 
 export type Color = {
   hex(): string
-  css(rgbOnly?: boolean): string
+  css(cssRgbOnly?: boolean): string
   rgb(): RGB
   hsl(): HSL
   hsv(): HSV

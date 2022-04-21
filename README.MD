@@ -162,3 +162,12 @@ console.log(cie76(rgbToCIELab(rgb), hsvToCIELab(hsv))); // 37.27
 console.log(cie94(rgbToCIELab(rgb), hsvToCIELab(hsv))); // 29.57
 console.log(cie2000(rgbToCIELab(rgb), hsvToCIELab(hsv))); // 24.44
 ```
+
+## Options
+There are a number of options you may pass to the `from...`, or to certain `...to...` functions.
+
+| Option | Default | Description |
+| :---: | :---- | :---- |
+| cssRgbOnly | false | Sets the converter to avoid using CSS color values (yellow, black, ...) and only use rgb string like `rgb(12, 24, 36)`. |
+| roundTo | 2 | Sets certain color values to be rounded to a given digit `(hsl, hsv, xyz, cielab)`. |
+| xyzRef | <pre>{<br>  x: 95.047,<br>  y: 100.00,<br>  z: 108.883<br>}</pre> | Set an XYZ reference white value for XYZ and CIELab conversions. |
