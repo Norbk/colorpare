@@ -18,6 +18,8 @@ import { InvalidColorError, isValidCmyk, isValidCssRgb, isValidHex, isValidHsl, 
 
 import { A, B, black, blue, cyan, green, hueHsl, hueHsv, L, lightness, magenta, red, saturationHsl, saturationHsv, value, X, Y, yellow, Z } from "../transformers";
 
+import { complementary, tetradic, triadic } from "../theory";
+
 const addTransformation = (color: Color): Color => {
   color.red = (value: number): Color => red(color, value);
   color.green = (value: number): Color => green(color, value);
@@ -50,6 +52,18 @@ const addDistanceCalculation = (color: Color): Color => {
   return color;
 };
 
+const addTheory = (color: Color): Color => {
+  color.complementary = () => complementary(color);
+  color.triadic = () => triadic(color);
+  color.tetradic = () => tetradic(color);
+  return color;
+}
+
+export const fromString = (value: string, options?: Options): Color => {
+  const color = <Color> {};
+  return addTransformation(addDistanceCalculation(addTheory(color)));
+}
+
 export const fromHex = (hex: string, options?: Options): Color => {
   if(!isValidHex(hex))
     throw new InvalidColorError<string>(hex, "HEX");
@@ -63,7 +77,7 @@ export const fromHex = (hex: string, options?: Options): Color => {
     xyz:  () => hexToXyz(hex, options),
     lab:  () => hexToCIELab(hex, options)
   };
-  return addTransformation(addDistanceCalculation(color));
+  return addTransformation(addDistanceCalculation(addTheory(color)));
 };
 
 export const fromRgb = (rgb: RGB, options?: Options): Color => {
@@ -79,7 +93,7 @@ export const fromRgb = (rgb: RGB, options?: Options): Color => {
     xyz: () => rgbToXyz(rgb, options),
     lab: () => rgbToCIELab(rgb, options)
   };
-  return addTransformation(addDistanceCalculation(color));
+  return addTransformation(addDistanceCalculation(addTheory(color)));
 };
 
 export const fromCss = (css: string, options?: Options): Color => {
@@ -106,7 +120,7 @@ export const fromHsl = (hsl: HSL, options?: Options): Color => {
     xyz: () => hslToXyz(hsl, options),
     lab: () => hslToCIELab(hsl, options)
   };
-  return addTransformation(addDistanceCalculation(color));
+  return addTransformation(addDistanceCalculation(addTheory(color)));
 };
 
 export const fromHsv = (hsv: HSV, options?: Options): Color => {
@@ -122,7 +136,7 @@ export const fromHsv = (hsv: HSV, options?: Options): Color => {
     xyz: () => hsvToXyz(hsv, options),
     lab: () => hsvToCIELab(hsv, options)
   };
-  return addTransformation(addDistanceCalculation(color));
+  return addTransformation(addDistanceCalculation(addTheory(color)));
 };
 
 export const fromCmyk = (cmyk: CMYK, options?: Options): Color => {
@@ -138,7 +152,7 @@ export const fromCmyk = (cmyk: CMYK, options?: Options): Color => {
     xyz: () => cmykToXyz(cmyk, options),
     lab: () => cmykToCIELab(cmyk, options)
   };
-  return addTransformation(addDistanceCalculation(color));
+  return addTransformation(addDistanceCalculation(addTheory(color)));
 };
 
 export const fromXyz = (xyz: XYZ, options?: Options): Color => {
@@ -154,7 +168,7 @@ export const fromXyz = (xyz: XYZ, options?: Options): Color => {
     cmyk: () => xyzToCmyk(xyz),
     lab: () => xyzToCIELab(xyz, options)
   };
-  return addTransformation(addDistanceCalculation(color));
+  return addTransformation(addDistanceCalculation(addTheory(color)));
 };
 
 export const fromLab = (lab: CIELab, options?: Options): Color => {
@@ -170,5 +184,5 @@ export const fromLab = (lab: CIELab, options?: Options): Color => {
     cmyk: () => labToCmyk(lab),
     xyz: () => labToXyz(lab, options)
   };
-  return addTransformation(addDistanceCalculation(color));
+  return addTransformation(addDistanceCalculation(addTheory(color)));
 };

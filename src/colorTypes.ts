@@ -81,4 +81,8 @@ export type Color = {
     cie94: number
     cie2000: number
   }
+
+  complementary(): Color
+  triadic(): Array<Color>
+  tetradic(): Array<Color>
 }

@@ -13,3 +13,7 @@ export {
 export {
   cie76, cie94, cie2000
 } from "./calculators";
+
+export {
+  complementary, triadic, tetradic
+} from "./theory"
