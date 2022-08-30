@@ -64,7 +64,7 @@ const color = fromCmyk(c: 3, m: 89, y: 29, k: 4);
 const color = fromXyz(x: 45.3, y: 23.4, z: 78.9);
 
 // from CIELab values (l = 0 - 100; a, b = -128 - 128)
-const color = fromLab(l: 74, a = -41.02, b: 81.160;
+const color = fromLab(l: 74, a = -41.02, b: 81.160);
 ```
 ### Conversion
 Getting specific color space values from the color object:
@@ -135,6 +135,22 @@ const color2 = fromHex("000000");
 color1.distanceFrom(color2); // {cie76: 100, cie94: 100, cie2000: 100}
 ```
 
+### Color Theory
+Retrieve complementer colors.
+```js
+import { fromHex } from "colorpare";
+
+const color = fromHex("45EF21");
+
+color.complemetary().hex(); // CB21EF
+
+const [t1, t2] = color.triadic();
+console.log(t1.hex(), t2.hex()); // 2145EF EF2145
+
+const [t1, t2, t3] = color.tetradic();
+console.log(t1.hex(), t2.hex(), t3.hex()); // 21ACEF CB21EF EF6421
+```
+
 ---
 
 ## Converters (`...to...` functions)
@@ -163,6 +179,19 @@ console.log(cie94(rgbToCIELab(rgb), hsvToCIELab(hsv))); // 29.57
 console.log(cie2000(rgbToCIELab(rgb), hsvToCIELab(hsv))); // 24.44
 ```
 
+## Color Theory functions
+The standalone theory functions use HSL color space.
+```js
+const {fromHex, complementary, triadic, tetradic } = require("colorpare");
+
+const color = fromHex("45EF21");
+const hsl = color.hsl();
+
+console.log(complementary(hsl)); // { h: 289.51, s: 86.55, l: 53.33 }
+console.log(triadic(hsl)); // [ { h: 229.51, s: 86.55, l: 53.33 }, { h: 349.51, s: 86.55, l: 53.33 } ]
+console.log(tetradic(hsl)); // [ { h: 199.51, s: 86.55, l: 53.33 }, { h: 289.51, s: 86.55, l: 53.33 }, { h: 19.51, s: 86.55, l: 53.33 } ]
+```
+
 ## Options
 There are a number of options you may pass to the `from...`, or to certain `...to...` functions.
 
@@ -175,7 +204,7 @@ There are a number of options you may pass to the `from...`, or to certain `...t
 ```js
 const color = fromHex("DC143C", {cssRgbOnly: true, roundTo: 3})
 
-console.log(color.css()) // rgb(220, 20, 60) isntead of the string: crimson
+console.log(color.css()) // rgb(220, 20, 60) instead of the string: crimson
 console.log(color.hsv()) // { h: 348, s: 90.909, v: 86.275 }
 
 console.log(rgbToCIELab({r: 132, g: 47, b: 211}, {roundTo: 4})) // { l: 40.6409, a: 64.1968, b: -68.7356 }

@@ -53,9 +53,22 @@ const addDistanceCalculation = (color: Color): Color => {
 };
 
 const addTheory = (color: Color): Color => {
-  color.complementary = () => complementary(color);
-  color.triadic = () => triadic(color);
-  color.tetradic = () => tetradic(color);
+  color.complementary = () => fromHsl(complementary(color.hsl()));
+  color.triadic = () => {
+    const tr = triadic(color.hsl());
+    return [
+      fromHsl(tr[0]),
+      fromHsl(tr[1])
+    ];
+  };
+  color.tetradic = () => {
+    const te = tetradic(color.hsl());
+    return [
+      fromHsl(te[0]),
+      fromHsl(te[1]),
+      fromHsl(te[2])
+    ];
+  };
   return color;
 }
 
