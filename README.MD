@@ -1,6 +1,6 @@
 <h1 align="center" style="font-size: 60px">
 </br>
-  <img width="500px" src="logo/v1.svg" />
+  <img width="500px" src="logo/v2.svg" />
 </br>
 </h1>
 <article>
@@ -39,14 +39,18 @@ npm i colorpare
 To create a `Color` object and use that to compare, transform and translate the color, you can use the `from...` methods. All the supported color spaces and formats have their corresponding ones.
 
 ```javascript
-import { fromHex, fromCss, fromRgb, fromHsl, fromHsv, fromCmyk, fromXyz, fromCIELab } from "colorpare";
+import { fromString, fromHex, fromCss, fromRgb, fromHsl, fromHsv, fromCmyk, fromXyz, fromCIELab } from "colorpare";
 
-// from hex string
+// from hex string (DEPRECATED)
 const color = fromHex("FA56E1");
 
-// from CSS
+// from CSS (DEPRECATED)
 const color = fromCss("yellow");
 const color = fromCss("rgb(123, 41, 219)");
+
+// from string representation
+// use this instead for HEX and CSS as well
+const color = fromString("xyz(8, 71.2, 41.3)");
 
 // from RGB values (r, g, b = 0 - 255)
 const color = fromRgb({r: 10, g: 36, b: 192});

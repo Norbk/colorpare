@@ -72,27 +72,6 @@ const addTheory = (color: Color): Color => {
   return color;
 }
 
-export const fromString = (value: string, options?: Options): Color => {
-  const color = <Color> {};
-  return addTransformation(addDistanceCalculation(addTheory(color)));
-}
-
-export const fromHex = (hex: string, options?: Options): Color => {
-  if(!isValidHex(hex))
-    throw new InvalidColorError<string>(hex, "HEX");
-  const color = <Color> {
-    hex:  () => hex,
-    css:  () => hexToCss(hex, options),
-    rgb:  () => hexToRgb(hex),
-    hsl:  () => hexToHsl(hex, options),
-    hsv:  () => hexToHsv(hex, options),
-    cmyk: () => hexToCmyk(hex),
-    xyz:  () => hexToXyz(hex, options),
-    lab:  () => hexToCIELab(hex, options)
-  };
-  return addTransformation(addDistanceCalculation(addTheory(color)));
-};
-
 export const fromRgb = (rgb: RGB, options?: Options): Color => {
   if(!isValidRgb(rgb))
     throw new InvalidColorError<RGB>(rgb, "RGB");
@@ -107,17 +86,6 @@ export const fromRgb = (rgb: RGB, options?: Options): Color => {
     lab: () => rgbToCIELab(rgb, options)
   };
   return addTransformation(addDistanceCalculation(addTheory(color)));
-};
-
-export const fromCss = (css: string, options?: Options): Color => {
-  if(cssValues[css]) {
-    return fromHex(cssValues[css], options);
-  } else if(isValidCssRgb(css)) {
-    const [r, g, b] = css.substring(4).replace(" ", "").split(",");
-    return fromRgb({r: parseInt(r), g: parseInt(g), b: parseInt(b)}, options);
-  } else {
-    throw new InvalidColorError<string>(css, "CSS");
-  }
 };
   
 export const fromHsl = (hsl: HSL, options?: Options): Color => {
@@ -198,4 +166,91 @@ export const fromLab = (lab: CIELab, options?: Options): Color => {
     xyz: () => labToXyz(lab, options)
   };
   return addTransformation(addDistanceCalculation(addTheory(color)));
+};
+
+export const fromString = (value: string, options?: Options): Color => {
+  try {
+    if (value.toLowerCase().startsWith('rgb(')) {
+      const [r, g, b] = value.substring(value.indexOf("(") + 1, value.indexOf(")")).split(",");
+      return fromRgb({r: parseInt(r), g: parseInt(g), b: parseInt(b)}, options);
+    } else if (value.toLowerCase().startsWith('hsl(')) {
+      const [h, s, l] = value.substring(value.indexOf("(") + 1, value.indexOf(")")).split(",");
+      return fromHsl({h: parseFloat(h), s: parseFloat(s), l: parseFloat(l)}, options);
+    } else if (value.toLowerCase().startsWith('hsv(')) {
+      const [h, s, v] = value.substring(value.indexOf("(") + 1, value.indexOf(")")).split(",");
+      return fromHsv({h: parseFloat(h), s: parseFloat(s), v: parseFloat(v)}, options);
+    } else if (value.toLowerCase().startsWith('cmyk(')) {
+      const [c, m, y, k] = value.substring(value.indexOf("(") + 1, value.indexOf(")")).split(",");
+      return fromCmyk({c: parseFloat(c), m: parseFloat(m), y: parseFloat(y), k: parseFloat(k)}, options);
+    } else if (value.toLowerCase().startsWith('xyz(')) {
+      const [x, y, z] = value.substring(value.indexOf("(") + 1, value.indexOf(")")).split(",");
+      return fromXyz({x: parseFloat(x), y: parseFloat(y), z: parseFloat(z)}, options);
+    } else if (value.toLowerCase().startsWith('lab(')) {
+      const [l, a, b] = value.substring(value.indexOf("(") + 1, value.indexOf(")")).split(",");
+      return fromLab({l: parseFloat(l), a: parseFloat(a), b: parseFloat(b)}, options);
+    } else if(isValidHex(value)) {
+      const color = <Color> {
+        hex:  () => value.startsWith('#') ? value.substring(1) : value.toLowerCase(),
+        css:  () => hexToCss(value, options),
+        rgb:  () => hexToRgb(value),
+        hsl:  () => hexToHsl(value, options),
+        hsv:  () => hexToHsv(value, options),
+        cmyk: () => hexToCmyk(value),
+        xyz:  () => hexToXyz(value, options),
+        lab:  () => hexToCIELab(value, options)
+      };
+      return addTransformation(addDistanceCalculation(addTheory(color)));
+    } else if(cssValues[value]) {
+      const color = <Color> {
+        hex:  () => cssValues[value],
+        css:  () => hexToCss(cssValues[value], options),
+        rgb:  () => hexToRgb(cssValues[value]),
+        hsl:  () => hexToHsl(cssValues[value], options),
+        hsv:  () => hexToHsv(cssValues[value], options),
+        cmyk: () => hexToCmyk(cssValues[value]),
+        xyz:  () => hexToXyz(cssValues[value], options),
+        lab:  () => hexToCIELab(cssValues[value], options)
+      };
+      return addTransformation(addDistanceCalculation(addTheory(color)));
+    } 
+    throw new InvalidColorError<string>(value, "String");
+  } catch(error) {
+    throw new InvalidColorError<string>(value, "String");
+  }
+
+}
+
+/**
+ * @deprecated
+ * Use the {@link fromString} function instead.
+ */
+ export const fromHex = (hex: string, options?: Options): Color => {
+  if(!isValidHex(hex))
+    throw new InvalidColorError<string>(hex, "HEX");
+  const color = <Color> {
+    hex:  () => hex,
+    css:  () => hexToCss(hex, options),
+    rgb:  () => hexToRgb(hex),
+    hsl:  () => hexToHsl(hex, options),
+    hsv:  () => hexToHsv(hex, options),
+    cmyk: () => hexToCmyk(hex),
+    xyz:  () => hexToXyz(hex, options),
+    lab:  () => hexToCIELab(hex, options)
+  };
+  return addTransformation(addDistanceCalculation(addTheory(color)));
+};
+
+/**
+ * @deprecated
+ * Use the {@link fromString} function instead.
+ */
+ export const fromCss = (css: string, options?: Options): Color => {
+  if(cssValues[css]) {
+    return fromHex(cssValues[css], options);
+  } else if(isValidCssRgb(css)) {
+    const [r, g, b] = css.substring(4).replace(" ", "").split(",");
+    return fromRgb({r: parseInt(r), g: parseInt(g), b: parseInt(b)}, options);
+  } else {
+    throw new InvalidColorError<string>(css, "CSS");
+  }
 };

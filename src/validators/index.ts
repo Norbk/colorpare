@@ -6,7 +6,7 @@ export class InvalidColorError<T> extends Error {
   }
 }
 
-export const isValidHex = (hex: string): boolean => (new RegExp("[0-9A-Fa-f]{6}", "g").test(hex));
+export const isValidHex = (hex: string): boolean => (new RegExp("#?[0-9A-Fa-f]{6}", "g").test(hex));
 
 export const isValidCssRgb = (css: string): boolean => (new RegExp("rgb\\([0-9]{1,3}, ?[0-9]{1,3}, ?[0-9]{1,3}\\)", "g").test(css));
 
